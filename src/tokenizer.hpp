@@ -33,14 +33,14 @@ private:
 	Tokens Token{};
 public:
 	// Main functions
-	std::vector<Tokenizer> Tokenize(int ArgC, char* ArgV[]);
+	std::vector<Tokenizer> Tokenize(const char* ArgV[]);
 	void DisplayTokens() const;
 
 	// Boolean functions
-	bool IsIntLit(std::string String) const;
-	bool IsIdentifier(std::string String) const;
-	bool IsFileValid(std::ifstream& File, char* ArgV1) const;
-	bool IsKeyword(std::string String) const;
+	bool IsIntLit(const std::string& String);
+	bool IsIdentifier(const std::string& String);
+	bool IsFileValid(const std::ifstream& File, const char* ArgV1);
+	bool IsKeyword(const std::string& String);
 
 	// Getters (mostly for debugging)
 	std::vector<char> GetFileInVChar() const;

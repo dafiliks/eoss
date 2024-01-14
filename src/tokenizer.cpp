@@ -1,7 +1,7 @@
 ﻿#include "tokenizer.hpp"
 
 // Tokenizes file provided
-std::vector<Tokenizer> Tokenizer::Tokenize(int ArgC, char* ArgV[])
+std::vector<Tokenizer> Tokenizer::Tokenize(const char* ArgV[])
 {
 	std::ifstream File{ ArgV[1] };
 
@@ -100,7 +100,7 @@ void Tokenizer::DisplayTokens() const
 }
 
 // Checks if String is an Integer literal
-bool Tokenizer::IsIntLit(std::string String) const
+bool Tokenizer::IsIntLit(const std::string& String)
 {
 	// Check if any character of the string is not numerical
 	for (const auto& CC : String)
@@ -112,7 +112,7 @@ bool Tokenizer::IsIntLit(std::string String) const
 }
 
 // Checks if String is an identifier
-bool Tokenizer::IsIdentifier(std::string String) const
+bool Tokenizer::IsIdentifier(const std::string& String)
 {
 	// Check if first character of String is alphabetical and if String is a keyword
 	if (isalpha(String[0]) && !IsKeyword(String)) return true;
@@ -120,7 +120,7 @@ bool Tokenizer::IsIdentifier(std::string String) const
 }
 
 // Checks if File is valid (ends in .eoss and exists)
-bool Tokenizer::IsFileValid(std::ifstream& File, char* ArgV1) const
+bool Tokenizer::IsFileValid(const std::ifstream& File, const char* ArgV1)
 {
 	// Check if file ends in .eoss
 	if (ArgV1[strlen(ArgV1) - 1] != 's' || ArgV1[strlen(ArgV1) - 2] != 's' ||
@@ -144,7 +144,7 @@ bool Tokenizer::IsFileValid(std::ifstream& File, char* ArgV1) const
 }
 
 // Checks if String is a keyword
-bool Tokenizer::IsKeyword(std::string String) const
+bool Tokenizer::IsKeyword(const std::string& String)
 {
 	// Compare String to every keyword in eoss-lang
 	if (String == "return") return true;
