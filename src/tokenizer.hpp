@@ -10,6 +10,7 @@
 
 enum class Tokens
 {
+	NoToken,
 	Return,
 	IntLit,
 	Identifier,
@@ -19,37 +20,31 @@ enum class Tokens
 class Tokenizer
 {
 private:
-	// Vectors
 	std::vector<char> FileInVChar{};
 	std::vector<std::string> FileInVString{};
 	std::vector<Tokenizer> VTokens{};
 
-	// Strings
 	std::string Buffer{};
 	std::string Value{};
 
-	// Other
 	char CurrentChar{};
 	Tokens Token{};
 public:
-	// Main functions
-	std::vector<Tokenizer> Tokenize(const char* ArgV[]);
+	std::vector<Tokenizer>& Tokenize(const char* ArgV[]);
 	void DisplayTokens() const;
 
-	// Boolean functions
-	bool IsIntLit(const std::string& String);
-	bool IsIdentifier(const std::string& String);
-	bool IsFileValid(const std::ifstream& File, const char* ArgV1);
-	bool IsKeyword(const std::string& String);
+	bool IsIntLit(const std::string String) const;
+	bool IsIdentifier(const std::string String) const;
+	bool IsFileValid(const std::ifstream& File, const char* ArgV1) const;
+	bool IsKeyword(const std::string String) const;
 
-	// Getters (mostly for debugging)
-	std::vector<char> GetFileInVChar() const;
-	std::vector<std::string> GetFileInVString() const;
-	std::vector<Tokenizer> GetVTokens() const;
-	std::string GetBuffer() const;
-	std::string GetValue() const;
+	const std::vector<char>& GetFileInVChar() const;
+	const std::vector<std::string>& GetFileInVString() const;
+	const std::vector<Tokenizer>& GetVTokens() const;
+	const std::string& GetBuffer() const;
+	const std::string& GetValue() const;
 	char GetCurrentChar() const;
-	Tokens GetToken() const;
+	const Tokens& GetToken() const;
 };
 
 #endif // !TOKENIZER_HPP

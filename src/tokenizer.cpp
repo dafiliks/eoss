@@ -1,7 +1,6 @@
 ﻿#include "tokenizer.hpp"
 
-// Tokenizes file provided
-std::vector<Tokenizer> Tokenizer::Tokenize(const char* ArgV[])
+std::vector<Tokenizer>& Tokenizer::Tokenize(const char* ArgV[])
 {
 	std::ifstream File{ ArgV[1] };
 
@@ -68,13 +67,17 @@ std::vector<Tokenizer> Tokenizer::Tokenize(const char* ArgV[])
 				VTokens[i].Token = Tokens::SemiColon;
 				VTokens[i].Value = FileInVString[i];
 			}
+			else
+			{
+				VTokens[i].Token = Tokens::NoToken;
+				VTokens[i].Value = FileInVString[i];
+			}
 		}
 	}
 
 	return VTokens;
 }
 
-// Displays all tokens collected
 void Tokenizer::DisplayTokens() const
 {
 	// Display all tokens created
@@ -82,25 +85,28 @@ void Tokenizer::DisplayTokens() const
 	{
 		if (CVT.Token == Tokens::Return)
 		{
-			std::cout << "{ " << CVT.Value << " }" << " = Return" << "\n";
+			std::cout << "[ " << CVT.Value << " ]" << " = Return" << "\n";
 		}
 		else if (CVT.Token == Tokens::IntLit)
 		{
-			std::cout << "{ " << CVT.Value << " }" << " = IntLit" << "\n";
+			std::cout << "[ " << CVT.Value << " ]" << " = IntLit" << "\n";
 		}
 		else if (CVT.Token == Tokens::Identifier)
 		{
-			std::cout << "{ " << CVT.Value << " }" << " = Identifier" << "\n";
+			std::cout << "[ " << CVT.Value << " ]" << " = Identifier" << "\n";
 		}
 		else if (CVT.Token == Tokens::SemiColon)
 		{
-			std::cout << "{ " << CVT.Value << " }" << " = SemiColon" << "\n";
+			std::cout << "[ " << CVT.Value << " ]" << " = SemiColon" << "\n";
+		}
+		else
+		{
+			std::cout << "[ " << CVT.Value << " ]" << " = NoToken" << "\n";
 		}
 	}
 }
 
-// Checks if String is an Integer literal
-bool Tokenizer::IsIntLit(const std::string& String)
+bool Tokenizer::IsIntLit(const std::string String) const
 {
 	// Check if any character of the string is not numerical
 	for (const auto& CC : String)
@@ -111,16 +117,14 @@ bool Tokenizer::IsIntLit(const std::string& String)
 	return true;
 }
 
-// Checks if String is an identifier
-bool Tokenizer::IsIdentifier(const std::string& String)
+bool Tokenizer::IsIdentifier(const std::string String) const
 {
 	// Check if first character of String is alphabetical and if String is a keyword
 	if (isalpha(String[0]) && !IsKeyword(String)) return true;
 	else return false;
 }
 
-// Checks if File is valid (ends in .eoss and exists)
-bool Tokenizer::IsFileValid(const std::ifstream& File, const char* ArgV1)
+bool Tokenizer::IsFileValid(const std::ifstream& File, const char* ArgV1) const
 {
 	// Check if file ends in .eoss
 	if (ArgV1[strlen(ArgV1) - 1] != 's' || ArgV1[strlen(ArgV1) - 2] != 's' ||
@@ -143,8 +147,7 @@ bool Tokenizer::IsFileValid(const std::ifstream& File, const char* ArgV1)
 	return true;
 }
 
-// Checks if String is a keyword
-bool Tokenizer::IsKeyword(const std::string& String)
+bool Tokenizer::IsKeyword(const std::string String) const
 {
 	// Compare String to every keyword in eoss-lang
 	if (String == "return") return true;
@@ -152,18 +155,11 @@ bool Tokenizer::IsKeyword(const std::string& String)
 	else return false;
 }
 
-// Getter for FileInVChar
-std::vector<char> Tokenizer::GetFileInVChar() const { return FileInVChar; }
-// Getter for FileInVString
-std::vector<std::string> Tokenizer::GetFileInVString() const { return FileInVString; }
-// Getter for VTokens
-std::vector<Tokenizer> Tokenizer::GetVTokens() const { return VTokens; }
-// Getter for Buffer
-std::string Tokenizer::GetBuffer() const { return Buffer; }
-// Getter for Value
-std::string Tokenizer::GetValue() const { return Value; }
-// Getter for CurrentChar
+const std::vector<char>& Tokenizer::GetFileInVChar() const { return FileInVChar; }
+const std::vector<std::string>& Tokenizer::GetFileInVString() const { return FileInVString; }
+const std::vector<Tokenizer>& Tokenizer::GetVTokens() const { return VTokens; }
+const std::string& Tokenizer::GetBuffer() const { return Buffer; }
+const std::string& Tokenizer::GetValue() const { return Value; }
 char Tokenizer::GetCurrentChar() const { return CurrentChar; }
-// Getter for Token
-Tokens Tokenizer::GetToken() const { return Token; }
+const Tokens& Tokenizer::GetToken() const { return Token; }
 
