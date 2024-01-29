@@ -8,44 +8,46 @@
 #include <cassert>
 #include <cstring>
 
-enum class Tokens
+enum class tokens
 {
-	NoToken,
-	Return,
-	IntLit,
-	Identifier,
-	SemiColon
+	_notoken,
+	_return,
+	_intlit,
+	_identifier,
+	_semicolon
 };
 
-class Tokenizer
+class tokenizer
 {
 private:
-	std::vector<char> FileInVChar{};
-	std::vector<std::string> FileInVString{};
-	std::vector<Tokenizer> VTokens{};
+	std::vector<char> filevchar{};
+	std::vector<std::string> filevstring{};
 
-	std::string Buffer{};
-	std::string Value{};
+	// filevchar -> filevstring -> vtokens.value
+	std::vector<tokenizer> vtokens{};
 
-	char CurrentChar{};
-	Tokens Token{};
+	std::string buffer{};
+	char cchar{};
+
+	std::string value{};
+	tokens token{};
 public:
-	std::vector<Tokenizer>& Tokenize(const char* ArgV[]);
-	void DisplayTokens() const;
+	std::vector<tokenizer> tokenize(const char* argv[]);
+	void displaytokens() const;
 
-	bool IsIntLit(const std::string String) const;
-	bool IsIdentifier(const std::string String) const;
-	bool IsFileValid(const std::ifstream& File, const char* ArgV1) const;
-	bool IsKeyword(const std::string String) const;
+	bool isintlit(const std::string string) const;
+	bool isidentifier(const std::string string) const;
+	bool isfilevalid(const std::ifstream& file, const char* argv1) const;
+	bool iskeyword(const std::string string) const;
 
-	const std::vector<char>& GetFileInVChar() const;
-	const std::vector<std::string>& GetFileInVString() const;
-	const std::vector<Tokenizer>& GetVTokens() const;
-	const std::string& GetBuffer() const;
-	const std::string& GetValue() const;
-	char GetCurrentChar() const;
-	const Tokens& GetToken() const;
+	const std::vector<char> getfilevchar() const;
+	const std::vector<std::string> getfilevstring() const;
+	const std::vector<tokenizer> getvtokens() const;
+	const std::string getbuffer() const;
+	const std::string getvalue() const;
+	char getcchar() const;
+	const tokens gettoken() const;
 };
 
-#endif // !TOKENIZER_HPP
+#endif
 

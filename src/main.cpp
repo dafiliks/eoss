@@ -1,10 +1,10 @@
 #include "tokenizer.hpp"
 
-int main(int ArgC, char* ArgV[])
+int main(int argc, char* argv[])
 {
-	Tokenizer Tokenizer{};
-	Tokenizer.Tokenize(const_cast<const char**>(ArgV));
-	Tokenizer.DisplayTokens();
+	tokenizer tokenizer{};
+	tokenizer.tokenize(const_cast<const char**>(argv));
+	tokenizer.displaytokens();
 	
 	return 0;
 }
