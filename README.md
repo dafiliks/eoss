@@ -1,4 +1,4 @@
-# eoss-lang
+# eoss
 Compiler for Eoss Lang
 
 > [!WARNING]
