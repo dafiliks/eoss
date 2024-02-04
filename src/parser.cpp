@@ -7,7 +7,7 @@ void parser::parse(std::vector<tokenizer> vtokensP)
 	{
 		if (vtokensP[i].gettoken() == tokens::_intlit)
 		{
-			pfile << "{ type: \"num\", value: " << vtokensP[i].getvalue() << " }\n";
+			pfile << "{ type: \"num\", value: " << vtokensP[i].getvalue() << " },\n";
 		}
 	}
     pfile.close();
