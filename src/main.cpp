@@ -1,10 +1,13 @@
 #include "tokenizer.hpp"
+#include "parser.hpp"
 
-int main(int argc, char* argv[])
+int main(int argc, const char* argv[])
 {
 	tokenizer tokenizer{};
-	tokenizer.tokenize(const_cast<const char**>(argv));
+	tokenizer.tokenize(argv);
 	tokenizer.displaytokens();
+	parser parser{};
+	parser.parse(tokenizer.getvtokens());
 	
 	return 0;
 }

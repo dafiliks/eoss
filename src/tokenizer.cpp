@@ -137,14 +137,14 @@ bool tokenizer::isfilevalid(const std::ifstream& file, const char* argv1) const
 		argv1[strlen(argv1) - 3] != 'o' || argv1[strlen(argv1) - 4] != 'e' ||
 		argv1[strlen(argv1) - 5] != '.')
 	{
-		std::cerr << "\033[1;31meoss-lang > FILE PROvIDED LACKS .eoss EXTENSION\033[0m\n\n";
+		std::cerr << "\033[1;31meoss-lang > FILE PROVIDED LACKS .eoss EXTENSION\033[0m\n\n";
 		assert(false);
 		return false;
 	}
 
 	if (!file)
 	{
-		std::cerr << "\033[1;31meoss-lang > FILE PROvIDED DOES NOT EXIST\033[0m\n\n";
+		std::cerr << "\033[1;31meoss-lang > FILE PROVIDED DOES NOT EXIST\033[0m\n\n";
 		assert(false);
 		return false;
 	}
