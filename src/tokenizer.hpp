@@ -14,7 +14,12 @@ enum class tokens
 	_return,
 	_intlit,
 	_identifier,
-	_semicolon
+	_semicolon,
+	_int,
+	_open_brace,
+	_close_brace,
+	_open_paren,
+	_close_paren,
 };
 
 class tokenizer

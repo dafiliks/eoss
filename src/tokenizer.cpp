@@ -14,20 +14,24 @@ std::vector<tokenizer> tokenizer::tokenize(const char* argv[])
 
 		for (std::size_t i = 0; i < filevchar.size(); ++i)
 		{
-			if (filevchar[i] != ' ' && filevchar[i] != ';' && filevchar[i] != '\n')
+			if (filevchar[i] != ' ' && filevchar[i] != ';' && filevchar[i] != '\n' && filevchar[i] != '(')
 			{
 				buffer.push_back(filevchar[i]);
 			}
-			else if (filevchar[i] == ';')
+			else if (filevchar[i] == ';' || filevchar[i] == '(')
 			{
 				filevstring.push_back(buffer);
-				filevstring.push_back(";");
+				std::string s(1, filevchar[i]);
+				filevstring.push_back(s);
 				buffer = "";
 			}
 			else 
 			{
-				filevstring.push_back(buffer);
-				buffer = "";
+				if (buffer != "")
+				{
+					filevstring.push_back(buffer);
+					buffer = "";
+				}
 			}
 		}
 
@@ -51,6 +55,31 @@ std::vector<tokenizer> tokenizer::tokenize(const char* argv[])
 			if (filevstring[i] == "return")
 			{
 				vtokens[i].token = tokens::_return;
+				vtokens[i].value = filevstring[i];
+			}
+			if (filevstring[i] == "int")
+			{
+				vtokens[i].token = tokens::_int;
+				vtokens[i].value = filevstring[i];
+			}
+			else if (filevstring[i] == "{")
+			{
+				vtokens[i].token = tokens::_open_brace;
+				vtokens[i].value = filevstring[i];
+			}
+			else if (filevstring[i] == "}")
+			{
+				vtokens[i].token = tokens::_close_brace;
+				vtokens[i].value = filevstring[i];
+			}
+			else if (filevstring[i] == "(")
+			{
+				vtokens[i].token = tokens::_open_paren;
+				vtokens[i].value = filevstring[i];
+			}
+			else if (filevstring[i] == ")")
+			{
+				vtokens[i].token = tokens::_close_paren;
 				vtokens[i].value = filevstring[i];
 			}
 			else if (isintlit(filevstring[i]))
@@ -86,6 +115,26 @@ void tokenizer::displaytokens() const
 		if (vtokens[i].token == tokens::_return)
 		{
 			std::cout << "[ " << vtokens[i].value << " ]" << " = _return" << "\n";
+		}
+		else if (vtokens[i].token == tokens::_int)
+		{
+			std::cout << "[ " << vtokens[i].value << " ]" << " = _int" << "\n";
+		}
+		else if (vtokens[i].token == tokens::_open_brace)
+		{
+			std::cout << "[ " << vtokens[i].value << " ]" << " = _open_brace" << "\n";
+		}
+		else if (vtokens[i].token == tokens::_close_brace)
+		{
+			std::cout << "[ " << vtokens[i].value << " ]" << " = _close_brace" << "\n";
+		}
+		else if (vtokens[i].token == tokens::_open_paren)
+		{
+			std::cout << "[ " << vtokens[i].value << " ]" << " = _open_paren" << "\n";
+		}
+		else if (vtokens[i].token == tokens::_close_paren)
+		{
+			std::cout << "[ " << vtokens[i].value << " ]" << " = _close_paren" << "\n";
 		}
 		else if (vtokens[i].token == tokens::_intlit)
 		{
