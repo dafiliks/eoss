@@ -1,6 +1,5 @@
 # eoss
-Compiler for Eoss Lang
+Compiler
 
 > [!WARNING]
-> This project is very much WIP. I have upcoming exams and can only work on this project on the weekends, as
-> during the week, I am either revising or working on other private projects
+> dont use this yet, just a learning project currently!
