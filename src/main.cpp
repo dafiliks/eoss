@@ -3,11 +3,11 @@
 
 int main(int argc, const char* argv[])
 {
-	tokenizer tokenizer{};
-	tokenizer.tokenize(argv);
-	tokenizer.displaytokens();
-	parser parser{};
-	parser.parse(tokenizer.getvtokens());
+	Tokenizer Tokenizer{};
+	Tokenizer.Tokenize(argv);
+	Tokenizer.DisplayTokens();
+	Parser Parser{};
+	Parser.Parse(Tokenizer.GetVectorOfTokens());
 	
 	return 0;
 }

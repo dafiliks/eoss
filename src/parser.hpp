@@ -1,14 +1,17 @@
 #ifndef PARSER_HPP
 #define PARSER_HPP
 
-#include "tokenizer.hpp"
 #include <iostream>
 #include <fstream>  
+#include "tokenizer.hpp"
+#include "ast.hpp"
 
-class parser : public tokenizer
+class Parser : public Tokenizer
 {
+private:
+	AST Program{};
 public:
-	void parse(std::vector<tokenizer> vtokensP);
+	void Parse(std::vector<Tokenizer> VectorOfTokens);
 };
 
 #endif

@@ -2,50 +2,33 @@
 #define AST_HPP
 
 #include <string>
+#include <vector>
+#include <variant>
 
-class Function;
-class Program;
-class Statement;
-class Return;
-class Expression;
-
-class Expression
+enum class Variant
 {
-public:
-	int constant{};
+    Function,
+    Return,
+    Constant,
+    Program
 };
 
-class Return
+struct AST
 {
-public:
-	Expression exp{};
+    Variant Variant;
+
+    std::vector<AST> Children;
+
+    int Value{};
+    std::string Name{};
+
+    void PrintAST(AST Program) const;
+    void PrintVariant() const;
 };
 
-class Statement
-{
-public:
-	Return ret{};
-};
-
-class Function
-{
-public:
-	std::string name{};
-	Statement body{};
-};
-
-class Program
-{
-public:
-	Function func_def{};
-};
-
-class AST
-{
-public:
-	Program AST;
-
-	void printAST();
-};
+AST CreateProgram(std::vector<AST> Children);
+AST CreateFunction(std::string Name, std::vector<AST> Children);
+AST CreateReturn(AST Statement);
+AST CreateConstant(const int N);
 
 #endif

@@ -1,29 +1,33 @@
 #include "parser.hpp"
 #include "ast.hpp"
 
-void parser::parse(std::vector<tokenizer> vtokensP)
+void Parser::Parse(std::vector<Tokenizer> VectorOfTokens)
 {
-	AST AST;
-	for (std::size_t i = 0; i < vtokensP.size(); i++)
+	for (std::size_t i = 0; i < VectorOfTokens.size(); i++)
 	{
-		if (vtokensP[i].gettoken() == tokens::_int)
+		if (VectorOfTokens[i].GetToken() == Tokens::Integer)
 		{
-			if (vtokensP[i + 1].getvalue() == "main")
+			if (VectorOfTokens[i + 1].GetValue() == "main")
 			{
-				if (vtokensP[i + 2].gettoken() == tokens::_open_paren &&
-					vtokensP[i + 3].gettoken() == tokens::_close_paren)
+				if (VectorOfTokens[i + 2].GetToken() == Tokens::OpenParen &&
+					VectorOfTokens[i + 3].GetToken() == Tokens::CloseParen)
 				{
-					AST.AST.func_def.name = "main";
-					if (vtokensP[i + 5].gettoken() == tokens::_return)
+					if (VectorOfTokens[i + 5].GetToken() == Tokens::Return)
 					{
-						if (vtokensP[i + 6].gettoken() == tokens::_intlit)
+						if (VectorOfTokens[i + 6].GetToken() == Tokens::IntLit)
 						{
-							AST.AST.func_def.body.ret.exp.constant = std::stoi(vtokensP[i + 6].getvalue());
+							Program = CreateProgram({
+								CreateFunction("main", {
+									CreateReturn(CreateConstant(0))
+									}
+								)}
+							);
 						}
 					}
 				}
 			}
 		}
 	}
-	AST.printAST();
+
+	Program.PrintAST(Program);
 }

@@ -8,50 +8,49 @@
 #include <cassert>
 #include <cstring>
 
-enum class tokens
+enum class Tokens
 {
-	_notoken,
-	_return,
-	_intlit,
-	_identifier,
-	_semicolon,
-	_int,
-	_open_brace,
-	_close_brace,
-	_open_paren,
-	_close_paren,
+	NoToken,
+	Return,
+	IntLit,
+	Identifier,
+	SemiColon,
+	Integer,
+	OpenBrace,
+	CloseBrace,
+	OpenParen,
+	CloseParen,
 };
 
-class tokenizer
+class Tokenizer
 {
 private:
-	std::vector<char> filevchar{};
-	std::vector<std::string> filevstring{};
+	std::vector<char> FileInVectorOfChars{};
+	std::vector<std::string> FileInVectorOfStrings{};
 
-	// filevchar -> filevstring -> vtokens.value
-	std::vector<tokenizer> vtokens{};
+	std::vector<Tokenizer> VectorOfTokens{};
 
-	std::string buffer{};
-	char cchar{};
+	std::string Buffer{};
+	char CurrentChar{};
 
-	std::string value{};
-	tokens token{};
+	std::string Value{};
+	Tokens Token{};
 public:
-	std::vector<tokenizer> tokenize(const char* argv[]);
-	void displaytokens() const;
+	std::vector<Tokenizer> Tokenize(const char* argv[]);
+	void DisplayTokens() const;
 
-	bool isintlit(const std::string string) const;
-	bool isidentifier(const std::string string) const;
-	bool isfilevalid(const std::ifstream& file, const char* argv1) const;
-	bool iskeyword(const std::string string) const;
+	bool IsIntLit(const std::string String) const;
+	bool IsIdentifier(const std::string String) const;
+	bool IsFileValid(const std::ifstream& File, const char* argv1) const;
+	bool IsKeyword(const std::string String) const;
 
-	const std::vector<char> getfilevchar() const;
-	const std::vector<std::string> getfilevstring() const;
-	const std::vector<tokenizer> getvtokens() const;
-	const std::string getbuffer() const;
-	const std::string getvalue() const;
-	char getcchar() const;
-	const tokens gettoken() const;
+	const std::vector<char> GetFileInVectorOfChars() const;
+	const std::vector<std::string> GetFileInVectorOfStrings() const;
+	const std::vector<Tokenizer> GetVectorOfTokens() const;
+	const std::string GetBuffer() const;
+	const std::string GetValue() const;
+	char GetCurrentChar() const;
+	const Tokens GetToken() const;
 };
 
 #endif

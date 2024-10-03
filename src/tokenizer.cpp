@@ -1,165 +1,166 @@
 ﻿#include "tokenizer.hpp"
 
-std::vector<tokenizer> tokenizer::tokenize(const char* argv[])
+std::vector<Tokenizer> Tokenizer::Tokenize(const char* argv[])
 {
-	std::ifstream file{ argv[1] };
+	std::ifstream File{ argv[1] };
 
-	if (isfilevalid(file, argv[1]))
+	if (IsFileValid(File, argv[1]))
 	{
-		while (file >> std::noskipws >> cchar) 
+		while (File >> std::noskipws >> CurrentChar) 
 		{
-			filevchar.push_back(cchar); 
+			FileInVectorOfChars.push_back(CurrentChar); 
 		}
-		file.close();
+		File.close();
 
-		for (std::size_t i = 0; i < filevchar.size(); ++i)
+		for (std::size_t i = 0; i < FileInVectorOfChars.size(); ++i)
 		{
-			if (filevchar[i] != ' ' && filevchar[i] != ';' && filevchar[i] != '\n' && filevchar[i] != '(')
+			if (FileInVectorOfChars[i] != ' ' && FileInVectorOfChars[i] != ';'
+			&& FileInVectorOfChars[i] != '\n' && FileInVectorOfChars[i] != '(')
 			{
-				buffer.push_back(filevchar[i]);
+				Buffer.push_back(FileInVectorOfChars[i]);
 			}
-			else if (filevchar[i] == ';' || filevchar[i] == '(')
+			else if (FileInVectorOfChars[i] == ';' || FileInVectorOfChars[i] == '(')
 			{
-				filevstring.push_back(buffer);
-				std::string s(1, filevchar[i]);
-				filevstring.push_back(s);
-				buffer = "";
+				FileInVectorOfStrings.push_back(Buffer);
+				std::string S(1, FileInVectorOfChars[i]);
+				FileInVectorOfStrings.push_back(S);
+				Buffer = "";
 			}
 			else 
 			{
-				if (buffer != "")
+				if (Buffer != "")
 				{
-					filevstring.push_back(buffer);
-					buffer = "";
+					FileInVectorOfStrings.push_back(Buffer);
+					Buffer = "";
 				}
 			}
 		}
 
-		if (buffer != "")
+		if (Buffer != "")
 		{
-			filevstring.push_back(buffer);
+			FileInVectorOfStrings.push_back(Buffer);
 		}
 
-		for (std::size_t i = 0; i < filevstring.size(); ++i)
+		for (std::size_t i = 0; i < FileInVectorOfStrings.size(); ++i)
 		{
-			if (filevstring[i] == "")
+			if (FileInVectorOfStrings[i] == "")
 			{
-				filevstring.erase(filevstring.begin() + i);
+				FileInVectorOfStrings.erase(FileInVectorOfStrings.begin() + i);
 			}
 		}
 
-		vtokens.resize(filevstring.size());
+		VectorOfTokens.resize(FileInVectorOfStrings.size());
 
-		for (std::size_t i = 0; i < filevstring.size(); ++i)
+		for (std::size_t i = 0; i < FileInVectorOfStrings.size(); ++i)
 		{
-			if (filevstring[i] == "return")
+			if (FileInVectorOfStrings[i] == "return")
 			{
-				vtokens[i].token = tokens::_return;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::Return;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			if (filevstring[i] == "int")
+			else if (FileInVectorOfStrings[i] == "int")
 			{
-				vtokens[i].token = tokens::_int;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::Integer;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (filevstring[i] == "{")
+			else if (FileInVectorOfStrings[i] == "{")
 			{
-				vtokens[i].token = tokens::_open_brace;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::OpenBrace;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (filevstring[i] == "}")
+			else if (FileInVectorOfStrings[i] == "}")
 			{
-				vtokens[i].token = tokens::_close_brace;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::CloseBrace;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (filevstring[i] == "(")
+			else if (FileInVectorOfStrings[i] == "(")
 			{
-				vtokens[i].token = tokens::_open_paren;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::OpenParen;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (filevstring[i] == ")")
+			else if (FileInVectorOfStrings[i] == ")")
 			{
-				vtokens[i].token = tokens::_close_paren;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::CloseParen;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (isintlit(filevstring[i]))
+			else if (IsIntLit(FileInVectorOfStrings[i]))
 			{
-				vtokens[i].token = tokens::_intlit;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::IntLit;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (isidentifier(filevstring[i]))
+			else if (IsIdentifier(FileInVectorOfStrings[i]))
 			{
-				vtokens[i].token = tokens::_identifier;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::Identifier;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
-			else if (filevstring[i] == ";")
+			else if (FileInVectorOfStrings[i] == ";")
 			{
-				vtokens[i].token = tokens::_semicolon;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::SemiColon;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
 			else
 			{
-				vtokens[i].token = tokens::_notoken;
-				vtokens[i].value = filevstring[i];
+				VectorOfTokens[i].Token = Tokens::NoToken;
+				VectorOfTokens[i].Value = FileInVectorOfStrings[i];
 			}
 		}
 	}
 
-	return vtokens;
+	return VectorOfTokens;
 }
 
-void tokenizer::displaytokens() const
+void Tokenizer::DisplayTokens() const
 {
-	for (std::size_t i = 0; i < vtokens.size(); ++i)
+	for (std::size_t i = 0; i < VectorOfTokens.size(); ++i)
 	{
-		if (vtokens[i].token == tokens::_return)
+		if (VectorOfTokens[i].Token == Tokens::Return)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _return" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = Return" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_int)
+		else if (VectorOfTokens[i].Token == Tokens::Integer)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _int" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = Integer" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_open_brace)
+		else if (VectorOfTokens[i].Token == Tokens::OpenBrace)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _open_brace" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = OpenBrace" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_close_brace)
+		else if (VectorOfTokens[i].Token == Tokens::CloseBrace)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _close_brace" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = CloseBrace" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_open_paren)
+		else if (VectorOfTokens[i].Token == Tokens::OpenParen)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _open_paren" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = OpenParen" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_close_paren)
+		else if (VectorOfTokens[i].Token == Tokens::CloseParen)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _close_paren" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = CloseParen" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_intlit)
+		else if (VectorOfTokens[i].Token == Tokens::IntLit)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _intlit" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = IntegerLit" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_identifier)
+		else if (VectorOfTokens[i].Token == Tokens::Identifier)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _identifier" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = Identifier" << "\n";
 		}
-		else if (vtokens[i].token == tokens::_semicolon)
+		else if (VectorOfTokens[i].Token == Tokens::SemiColon)
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _semicolon" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = SemiColon" << "\n";
 		}
 		else
 		{
-			std::cout << "[ " << vtokens[i].value << " ]" << " = _notoken" << "\n";
+			std::cout << "[ " << VectorOfTokens[i].Value << " ]" << " = NoToken" << "\n";
 		}
 	}
 }
 
-bool tokenizer::isintlit(const std::string string) const
+bool Tokenizer::IsIntLit(const std::string String) const
 {
-	for (std::size_t i = 0; i < string.size(); ++i)
+	for (std::size_t i = 0; i < String.size(); ++i)
 	{
-		if (std::isalpha(string[i]) || string[i] == ';')
+		if (std::isalpha(String[i]) || String[i] == ';')
 		{
 			return false;
 		}
@@ -168,9 +169,9 @@ bool tokenizer::isintlit(const std::string string) const
 	return true;
 }
 
-bool tokenizer::isidentifier(const std::string string) const
+bool Tokenizer::IsIdentifier(const std::string String) const
 {
-	if (isalpha(string[0]) && !iskeyword(string))
+	if (isalpha(String[0]) && !IsKeyword(String))
 	{
 		return true;
 	}
@@ -180,20 +181,20 @@ bool tokenizer::isidentifier(const std::string string) const
 	}
 }
 
-bool tokenizer::isfilevalid(const std::ifstream& file, const char* argv1) const
+bool Tokenizer::IsFileValid(const std::ifstream& File, const char* argv1) const
 {
 	if (argv1[strlen(argv1) - 1] != 's' || argv1[strlen(argv1) - 2] != 's' ||
 		argv1[strlen(argv1) - 3] != 'o' || argv1[strlen(argv1) - 4] != 'e' ||
 		argv1[strlen(argv1) - 5] != '.')
 	{
-		std::cerr << "\033[1;31meoss-lang > FILE PROVIDED LACKS .eoss EXTENSION\033[0m\n\n";
+		std::cerr << "\033[1;31meoss-lang > File PROVIDED LACKS .eoss EXTENSION\033[0m\n\n";
 		assert(false);
 		return false;
 	}
 
-	if (!file)
+	if (!File)
 	{
-		std::cerr << "\033[1;31meoss-lang > FILE PROVIDED DOES NOT EXIST\033[0m\n\n";
+		std::cerr << "\033[1;31meoss-lang > File PROVIDED DOES NOT EXIST\033[0m\n\n";
 		assert(false);
 		return false;
 	}
@@ -201,9 +202,9 @@ bool tokenizer::isfilevalid(const std::ifstream& file, const char* argv1) const
 	return true;
 }
 
-bool tokenizer::iskeyword(const std::string string) const
+bool Tokenizer::IsKeyword(const std::string String) const
 {
-	if (string == "return")
+	if (String == "return")
 	{
 		return true;
 	}
@@ -211,11 +212,11 @@ bool tokenizer::iskeyword(const std::string string) const
 	else return false;
 }
 
-const std::vector<char> tokenizer::getfilevchar() const { return filevchar; }
-const std::vector<std::string> tokenizer::getfilevstring() const { return filevstring; }
-const std::vector<tokenizer> tokenizer::getvtokens() const { return vtokens; }
-const std::string tokenizer::getbuffer() const { return buffer; }
-const std::string tokenizer::getvalue() const { return value; }
-char tokenizer::getcchar() const { return cchar; }
-const tokens tokenizer::gettoken() const { return token; }
+const std::vector<char> Tokenizer::GetFileInVectorOfChars() const { return FileInVectorOfChars; }
+const std::vector<std::string> Tokenizer::GetFileInVectorOfStrings() const { return FileInVectorOfStrings; }
+const std::vector<Tokenizer> Tokenizer::GetVectorOfTokens() const { return VectorOfTokens; }
+const std::string Tokenizer::GetBuffer() const { return Buffer; }
+const std::string Tokenizer::GetValue() const { return Value; }
+char Tokenizer::GetCurrentChar() const { return CurrentChar; }
+const Tokens Tokenizer::GetToken() const { return Token; }
 
